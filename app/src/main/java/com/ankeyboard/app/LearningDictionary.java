@@ -75,13 +75,10 @@ public class LearningDictionary {
         });
 
         List<String> results = new ArrayList<>();
-        if (!prefix.isEmpty()) {
-            results.add(composingText); 
-        }
 
         for (int i = 0; i < Math.min(10, matches.size()); i++) {
             String word = matches.get(i).getKey();
-            if (!word.equalsIgnoreCase(composingText)) {
+            if (!word.equalsIgnoreCase(prefix) && !results.contains(word)) {
                 results.add(word);
             }
         }

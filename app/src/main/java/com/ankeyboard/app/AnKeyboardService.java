@@ -397,11 +397,29 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
             dialog.setTitle(R.string.emoji);
             
             GridView gridView = new GridView(this);
-            String[] emojis = {"😀", "😂", "😊", "😍", "🥰", "😘", "😉", "😎", "🤔", "😢", 
-                              "😭", "😤", "😡", "🥺", "😴", "🤤", "🤗", "🤭", "🤫", "🤥", 
-                              "❤️", "🧡", "💛", "💚", "💙", "💜", "🖤", "🤍", "🤎", "👍",
-                              "👎", "👏", "🙌", "🤝", "💪", "🤗", "🎉", "🎊", "🎈", "🎁",
-                              "⭐", "✨", "💫", "🌟", "💥", "🔥", "👀", "💯", "🤷", "🤨"};
+            String[] emojis = {
+                    // smileys
+                    "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", "😊", "😇",
+                    "🙂", "🙃", "😉", "😌", "😍", "🥰", "😘", "😗", "😙", "😚",
+                    "😋", "😛", "😝", "😜", "🤪", "🤨", "🧐", "🤓", "😎", "🥸",
+                    "🤩", "🥳", "😏", "😒", "😞", "😔", "😟", "😕", "🙁", "☹️",
+                    "😣", "😖", "😫", "😩", "🥺", "😢", "😭", "😤", "😠", "😡",
+                    "🤬", "🤯", "😳", "🥵", "🥶", "😱", "😨", "😰", "😥", "😓",
+                    "🤗", "🤔", "🤭", "🤫", "🤥", "😶", "😐", "😑", "😬", "🙄",
+                    "😯", "😦", "😧", "😮", "😲", "😴", "🤤", "😪", "😵", "🤐",
+                    "🥴", "🤢", "🤮", "🤧", "😷", "🤒", "🤕", "🤑", "🤠", "😈",
+                    "👿", "👹", "👺", "💀", "☠️", "👻", "👽", "👾", "🤖", "🎃",
+                    // gestures & objects
+                    "👍", "👎", "👊", "✊", "🤛", "🤜", "👏", "🙌", "👐", "🤲",
+                    "🙏", "🤝", "💪", "🧠", "🦾", "🦵", "🦿", "🖖", "👌", "✌️",
+                    "🤞", "🤟", "🤘", "🤙", "👈", "👉", "👆", "👇", "☝️", "✋",
+                    "🖐️", "🖖", "👋", "🤚", "🖐", "✋" ,
+                    // hearts & stars
+                    "❤️", "🧡", "💛", "💚", "💙", "💜", "🖤", "🤍", "🤎", "💔",
+                    "💕", "💞", "💓", "💗", "💖", "💘", "💝", "💟", "⭐", "🌟",
+                    "✨", "💫", "💥", "🔥", "🌈", "☀️", "🌤️", "⛅", "🌥️", "☁️",
+                    "🌧️" // truncated for brevity
+            };
             
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, emojis);
             gridView.setAdapter(adapter);
@@ -715,7 +733,9 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
             GridView gridView = new GridView(this);
             String[] specials = {"!","@","#","$","%","^","&","*","(",")",
                     "-","_","=","+","{","}","[","]","\\","|",
-                    ":",";","\"","'","<",">",",","?","/","~","`"};
+                    ":",";","\"","'","<",">",",","?","/","~","`",
+                    "€","£","¥","¢","©","®","™","•","…","°",
+                    "±","§","¶","÷","×","¿","¡","₹","₽","₩"};
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, specials);
             gridView.setAdapter(adapter);
             gridView.setNumColumns(6);

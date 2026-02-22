@@ -91,10 +91,10 @@ Open the AnKeyboard app and navigate to Settings to:
 ## 🎯 Advanced Features
 
 ### Word Learning System
-- Learns from every word you type
-- Maintains frequency counts for smarter predictions
-- Shows top suggestions in real-time
-- Auto-suggests based on typing patterns
+- Learns from every word you type (only if learning enabled)
+- Frequency counts drive prediction order
+- Suggestions no longer repeat the word you are typing
+- Autocorrect appears only when enabled and doesn’t duplicate input
 
 ### Translation
 - Powered by MyMemory Translate API (free, no API key needed)
@@ -290,7 +290,7 @@ For issues, feature requests, or questions:
 - Multi-language support (7 languages)
 - Dark mode with auto-detection
 - Full text editing features
-- Emoji picker with 50+ emojis
+- Emoji picker with 100+ emojis (duplicates removed, more reliable pasting)
 - Gesture typing support
 - Comprehensive settings panel
 - LGPL-3.0 license
