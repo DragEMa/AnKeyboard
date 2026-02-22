@@ -22,4 +22,4 @@ jobs:
       run: chmod +x ./gradlew
 
     - name: Build
-      run: ./gradlew build --warning-mode all
+      run: ./gradlew build --warning-mode all --stacktrace
