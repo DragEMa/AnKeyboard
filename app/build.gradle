@@ -20,7 +20,8 @@ android {
 	buildTypes {
 		release {
 			minifyEnabled = false
-			proguardFiles.add(getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro')
+			proguardFiles.add(getDefaultProguardFile('proguard-android-optimize.txt'))
+			proguardFiles.add(getDefaultProguardFile('proguard-rules.pro'))
 		}
 	}
 	buildFeatures {
@@ -61,6 +62,7 @@ dependencies {
 	// Kotlin stdlib (some AndroidX / libraries rely on Kotlin runtime)
 	implementation 'org.jetbrains.kotlin:kotlin-stdlib:2.3.10'
 }
+
 
 
 
