@@ -56,4 +56,10 @@
 	<string name="paste_success">Teks ditempel</string>
 	<string name="keyboard_not_enabled">Keyboard belum diaktifkan</string>
 	<string name="select_keyboard_picker">Pilih keyboard dari daftar</string>
+
+	<!-- Debug activity -->
+	<string name="debug_header">Debug / Report Issue</string>
+	<string name="debug_title_hint">Judul</string>
+	<string name="debug_body_hint">Deskripsi (opsional)</string>
+	<string name="debug_send">Kirim ke Repository</string>
 </resources>

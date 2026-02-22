@@ -180,6 +180,17 @@ gradle installDebug
 
 ## 🐛 Troubleshooting
 
+### Debug screen / issue reporter
+A hidden **DebugActivity** is available for the app; it allows you to type a title
+and description and submit it directly to the project's issue tracker via a
+webhook.  The mobile client never holds any GitHub token – the webhook server
+(for which a simple Node/Express example is provided in the repository) takes
+care of authenticating with GitHub and creating the issue.
+
+See `server.js` and `WEBHOOK_README.md` for details on how to deploy the webhook
+and where to configure the `WEBHOOK_URL` constant in `DebugActivity.java`.
+
+
 ### Keyboard doesn't appear
 - Ensure keyboard is enabled in Settings → Language & input → Virtual Keyboard
 - Check "Enable AnKeyboard" toggle is ON

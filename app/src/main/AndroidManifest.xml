@@ -44,7 +44,8 @@
 		<activity
 			android:name=".DebugActivity"
 			android:screenOrientation="portrait"
-			android:theme="@style/AppTheme.DebugActivity" />
+			android:theme="@style/AppTheme.DebugActivity"
+			android:exported="false" />
 		<activity
 			android:name=".SettingsActivity"
 			android:screenOrientation="portrait"
