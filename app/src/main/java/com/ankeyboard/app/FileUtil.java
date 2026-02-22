@@ -263,8 +263,8 @@ public class FileUtil {
         if (context == null || uri == null) {
             return null;
         }
+        String path = null;
         try {
-            String path = null;
             if (DocumentsContract.isDocumentUri(context, uri)) {
                 if (isExternalStorageDocument(uri)) {
                     final String docId = DocumentsContract.getDocumentId(uri);

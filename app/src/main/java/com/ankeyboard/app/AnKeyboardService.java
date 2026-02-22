@@ -547,7 +547,6 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         if (clipboard == null) return;
         if (!clipboard.hasPrimaryClip()) return;
-        ClipData.PrimaryClipHolder clipHolder = null; // placeholder
         ClipData clip = clipboard.getPrimaryClip();
         if (clip == null || clip.getItemCount() == 0) return;
         ClipData.Item item = clip.getItemAt(0);
