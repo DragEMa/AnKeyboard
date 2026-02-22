@@ -24,9 +24,11 @@ import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
 import android.content.res.Configuration;
 import android.content.ClipData;
+import android.content.SharedPreferences;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.res.Resources;
+
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
