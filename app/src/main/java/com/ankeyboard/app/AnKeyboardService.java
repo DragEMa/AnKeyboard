@@ -59,6 +59,11 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
     private StringBuilder composing = new StringBuilder();
     private Handler handler;
 
+    // clipboard history for improved paste support
+    private static final String PREF_DATA_NAME = "AnKeyboard_Data";
+    private static final String PREF_CLIPBOARD_HISTORY = "clipboard_history";
+    private java.util.List<String> clipboardHistory = new java.util.ArrayList<>();
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -67,6 +72,7 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
             languageManager = new LanguageManager(this);
             handler = new Handler(Looper.getMainLooper());
             seedInitialData();
+            loadClipboardHistory();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -151,6 +157,10 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
                 case 32: // Space
                     commitAndLearn(ic, " ");
                     break;
+
+                case -300: // Special characters popup
+                    showSpecialCharacters();
+                    break;
                     
                 case -100: // Emoji
                     showEmojiPicker();
@@ -213,7 +223,9 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
                 String wordTyped = composing.toString();
                 if (wordTyped.length() > 0) {
                     ic.commitText(wordTyped, 1);
-                    brain.learnWord(wordTyped);
+                    if (languageManager.isLearningEnabled()) {
+                        brain.learnWord(wordTyped);
+                    }
 
                     // Translate if enabled
                     if (languageManager.isTranslateEnabled()) {
@@ -283,6 +295,12 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
             if (composing == null) composing = new StringBuilder();
             candidateLayout.removeAllViews();
 
+            // respect user preference for suggestions
+            if (!languageManager.isSuggestionsEnabled()) {
+                setCandidatesViewShown(false);
+                return;
+            }
+
             if (composing.length() > 0) {
                 setCandidatesViewShown(true);
                 
@@ -291,8 +309,9 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
                     suggestions = new java.util.ArrayList<>();
                 }
 
-                // First suggestion as autocorrect
-                if (!suggestions.isEmpty()) {
+                int startIndex = 0;
+                // First suggestion might be special autocorrect
+                if (!suggestions.isEmpty() && languageManager.isAutocorrectEnabled()) {
                     String autocorrect = suggestions.get(0);
                     if (!autocorrect.equalsIgnoreCase(composing.toString())) {
                         Button btn = createSuggestionButton(autocorrect + " (Auto)", true);
@@ -300,10 +319,11 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
                         btn.setOnClickListener(v -> pickAutoCorrect(finalAutocorrect));
                         candidateLayout.addView(btn);
                     }
+                    startIndex = 1;
                 }
 
-                // Other suggestions
-                for (int i = 1; i < Math.min(6, suggestions.size()); i++) {
+                // Other suggestions (or all if autocorrect disabled)
+                for (int i = startIndex; i < Math.min(startIndex + 5, suggestions.size()); i++) {
                     final String suggestion = suggestions.get(i);
                     if (!suggestion.equalsIgnoreCase(composing.toString())) {
                         Button btn = createSuggestionButton(suggestion, false);
@@ -515,6 +535,7 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
             if (clipboard == null) return;
             ClipData clip = ClipData.newPlainText("text", selected);
             clipboard.setPrimaryClip(clip);
+            addToClipboardHistory(selected.toString());
             ic.commitText("", 1);
         } catch (Exception e) {
             e.printStackTrace();
@@ -535,6 +556,7 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
             if (clipboard == null) return;
             ClipData clip = ClipData.newPlainText("text", selected);
             clipboard.setPrimaryClip(clip);
+            addToClipboardHistory(selected.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -544,6 +566,11 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
      * Paste text from clipboard
      */
     private void pasteText() {
+        // if there is a history, show chooser
+        if (clipboardHistory.size() > 1) {
+            showClipboardHistoryDialog();
+            return;
+        }
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         if (clipboard == null) return;
         if (!clipboard.hasPrimaryClip()) return;
@@ -572,6 +599,67 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
                         getResources().getColor(R.color.keyboardBackground);
                 keyboardView.setBackgroundColor(bgColor);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // utility for clipboard history
+    private void loadClipboardHistory() {
+        try {
+            SharedPreferences prefs = getSharedPreferences(PREF_DATA_NAME, MODE_PRIVATE);
+            String serialized = prefs.getString(PREF_CLIPBOARD_HISTORY, "");
+            clipboardHistory.clear();
+            if (serialized.length() > 0) {
+                String[] parts = serialized.split("\n");
+                for (String s : parts) {
+                    if (s.length() > 0) {
+                        clipboardHistory.add(s);
+                    }
+                }
+            }
+        } catch (Exception ignored) {}
+    }
+
+    private void saveClipboardHistory() {
+        try {
+            SharedPreferences prefs = getSharedPreferences(PREF_DATA_NAME, MODE_PRIVATE);
+            StringBuilder sb = new StringBuilder();
+            for (String entry : clipboardHistory) {
+                sb.append(entry.replace("\n", " ")).append("\n");
+            }
+            prefs.edit().putString(PREF_CLIPBOARD_HISTORY, sb.toString()).apply();
+        } catch (Exception ignored) {}
+    }
+
+    private void addToClipboardHistory(String text) {
+        if (text == null || text.length() == 0) return;
+        clipboardHistory.remove(text);
+        clipboardHistory.add(0, text);
+        if (clipboardHistory.size() > 20) {
+            clipboardHistory.remove(clipboardHistory.size() - 1);
+        }
+        saveClipboardHistory();
+    }
+
+    private void showClipboardHistoryDialog() {
+        try {
+            Dialog dialog = new Dialog(this);
+            dialog.setTitle(R.string.clipboard_history);
+            GridView gridView = new GridView(this);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, clipboardHistory);
+            gridView.setAdapter(adapter);
+            gridView.setNumColumns(1);
+            gridView.setOnItemClickListener((parent, view, position, id) -> {
+                String chosen = clipboardHistory.get(position);
+                InputConnection ic = getCurrentInputConnection();
+                if (ic != null) {
+                    ic.commitText(chosen, 1);
+                }
+                dialog.dismiss();
+            });
+            dialog.setContentView(gridView);
+            dialog.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -614,5 +702,38 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
     @Override 
     public void swipeUp() { 
         showEmojiPicker();
+    }
+
+    /**
+     * Display dialog with special characters row
+     */
+    private void showSpecialCharacters() {
+        try {
+            Dialog dialog = new Dialog(this);
+            dialog.setTitle(R.string.special_characters);
+
+            GridView gridView = new GridView(this);
+            String[] specials = {"!","@","#","$","%","^","&","*","(",")",
+                    "-","_","=","+","{","}","[","]","\\","|",
+                    ":",";","\"","'","<",">",",","?","/","~","`"};
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, specials);
+            gridView.setAdapter(adapter);
+            gridView.setNumColumns(6);
+            gridView.setOnItemClickListener((parent, view, position, id) -> {
+                try {
+                    InputConnection ic = getCurrentInputConnection();
+                    if (ic != null) {
+                        ic.commitText(specials[position], 1);
+                    }
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+            dialog.setContentView(gridView);
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

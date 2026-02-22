@@ -89,7 +89,13 @@
             android:title="Autocorrect"
             android:summary="Aktifkan perbaikan otomatis"
             android:defaultValue="true" />
-            
+        
+        <SwitchPreferenceCompat
+            android:key="suggestions_enabled"
+            android:title="@string/suggestions_setting"
+            android:summary="Tampilkan saran kata saat mengetik"
+            android:defaultValue="true" />
+    
     </PreferenceCategory>
 
 </PreferenceScreen>

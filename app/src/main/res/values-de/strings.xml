@@ -47,6 +47,10 @@
 	<!-- Suggestions -->
 	<string name="suggestions">Vorschläge</string>
 	<string name="no_suggestions">Keine Vorschläge</string>
+	<string name="suggestions_setting">Wortvorschläge</string>
+	<string name="special_characters">Sonderzeichen</string>
+	<string name="clipboard_history">Zwischenablage‑Verlauf</string>
+	<string name="select_clipboard_item">Text zum Einfügen auswählen</string>
 	
 	<!-- Messages -->
 	<string name="success">Erfolg</string>

@@ -90,7 +90,53 @@ public class SettingsActivity extends AppCompatActivity {
                         return true;
                     });
                 }
-                
+
+                // Keyboard tuning switches that the service will consult directly
+                SwitchPreferenceCompat soundSwitch = findPreference("sound_enabled");
+                if (soundSwitch != null) {
+                    soundSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
+                        LanguageManager langManager = new LanguageManager(requireContext());
+                        langManager.setSoundEnabled((Boolean) newValue);
+                        return true;
+                    });
+                }
+
+                SwitchPreferenceCompat vibrationSwitch = findPreference("vibration_enabled");
+                if (vibrationSwitch != null) {
+                    vibrationSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
+                        LanguageManager langManager = new LanguageManager(requireContext());
+                        langManager.setVibrationEnabled((Boolean) newValue);
+                        return true;
+                    });
+                }
+
+                SwitchPreferenceCompat learningSwitch = findPreference("learning_enabled");
+                if (learningSwitch != null) {
+                    learningSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
+                        LanguageManager langManager = new LanguageManager(requireContext());
+                        langManager.setLearningEnabled((Boolean) newValue);
+                        return true;
+                    });
+                }
+
+                SwitchPreferenceCompat autoSwitch = findPreference("autocorrect_enabled");
+                if (autoSwitch != null) {
+                    autoSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
+                        LanguageManager langManager = new LanguageManager(requireContext());
+                        langManager.setAutocorrectEnabled((Boolean) newValue);
+                        return true;
+                    });
+                }
+
+                SwitchPreferenceCompat sugSwitch = findPreference("suggestions_enabled");
+                if (sugSwitch != null) {
+                    sugSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
+                        LanguageManager langManager = new LanguageManager(requireContext());
+                        langManager.setSuggestionsEnabled((Boolean) newValue);
+                        return true;
+                    });
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

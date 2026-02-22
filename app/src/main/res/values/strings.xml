@@ -47,6 +47,10 @@
 	<!-- Suggestions -->
 	<string name="suggestions">Saran</string>
 	<string name="no_suggestions">Tidak ada saran</string>
+	<string name="suggestions_setting">Saran Kata</string>
+	<string name="special_characters">Karakter Khusus</string>
+	<string name="clipboard_history">Riwayat Clipboard</string>
+	<string name="select_clipboard_item">Pilih teks untuk ditempel</string>
 	
 	<!-- Messages -->
 	<string name="success">Berhasil</string>

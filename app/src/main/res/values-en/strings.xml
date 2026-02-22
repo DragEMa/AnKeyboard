@@ -47,6 +47,10 @@
 	<!-- Suggestions -->
 	<string name="suggestions">Suggestions</string>
 	<string name="no_suggestions">No suggestions</string>
+	<string name="suggestions_setting">Word suggestions</string>
+	<string name="special_characters">Special characters</string>
+	<string name="clipboard_history">Clipboard history</string>
+	<string name="select_clipboard_item">Select text to paste</string>
 	
 	<!-- Messages -->
 	<string name="success">Success</string>

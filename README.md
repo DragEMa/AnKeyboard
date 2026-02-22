@@ -7,6 +7,7 @@ AnKeyboard is a modern, minimalist smart keyboard for Android with intelligent w
 ### Core Keyboard Features
 - **Smart Learning**: Learns from your typing habits and predicts words
 - **Autocorrect**: Intelligent auto-correction with visual suggestions  
+- **Word Suggestions**: optionally hide the candidate bar or disable autocorrect in settings
 - **Emoji Picker**: Complete emoji collection with quick access (50+ emojis)
 - **Text Editing**: Full editing toolbar with cut, copy, paste, select all
 - **Gesture Typing**: 
@@ -82,7 +83,9 @@ Open the AnKeyboard app and navigate to Settings to:
 - Enable/disable sound feedback
 - Enable/disable vibration feedback
 - Control word learning (Learning)
-- Control autocorrect suggestions
+- Enable/disable the candidate suggestion bar or autocorrect independently
+- Add special characters quick‑access via the “?123” key
+- Clipboard history support – pick from recent copies when pasting
 - Adjust translation behavior
 
 ## 🎯 Advanced Features
@@ -116,8 +119,10 @@ Open the AnKeyboard app and navigate to Settings to:
 
 ### Keyboard View
 - Clean and minimal key layout
-- Real-time word suggestions
+- Real-time word suggestions (toggleable)
 - Candidate bar with autocorrect suggestions
+- `?123` key to open special characters dialog
+- Built‑in clipboard history shown when pasting
 - Full QWERTY layout support
 
 ## 🔐 Privacy & Security

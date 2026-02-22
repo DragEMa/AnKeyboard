@@ -47,6 +47,10 @@
 	<!-- Suggestions -->
 	<string name="suggestions">Suggestions</string>
 	<string name="no_suggestions">Aucune suggestion</string>
+	<string name="suggestions_setting">Suggestions de mots</string>
+	<string name="special_characters">Caractères spéciaux</string>
+	<string name="clipboard_history">Historique du presse‑papier</string>
+	<string name="select_clipboard_item">Sélectionnez le texte à coller</string>
 	
 	<!-- Messages -->
 	<string name="success">Succès</string>

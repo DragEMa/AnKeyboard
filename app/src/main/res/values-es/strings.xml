@@ -47,6 +47,10 @@
 	<!-- Suggestions -->
 	<string name="suggestions">Sugerencias</string>
 	<string name="no_suggestions">Sin sugerencias</string>
+	<string name="suggestions_setting">Sugerencias de palabras</string>
+	<string name="special_characters">Caracteres especiales</string>
+	<string name="clipboard_history">Historial del portapapeles</string>
+	<string name="select_clipboard_item">Seleccione el texto para pegar</string>
 	
 	<!-- Messages -->
 	<string name="success">Éxito</string>

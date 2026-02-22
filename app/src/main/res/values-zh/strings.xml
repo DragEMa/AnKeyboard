@@ -47,6 +47,10 @@
 	<!-- Suggestions -->
 	<string name="suggestions">建议</string>
 	<string name="no_suggestions">没有建议</string>
+	<string name="suggestions_setting">词语建议</string>
+	<string name="special_characters">特殊字符</string>
+	<string name="clipboard_history">剪贴板历史</string>
+	<string name="select_clipboard_item">选择要粘贴的文本</string>
 	
 	<!-- Messages -->
 	<string name="success">成功</string>

@@ -47,6 +47,10 @@
 	<!-- Suggestions -->
 	<string name="suggestions">提案</string>
 	<string name="no_suggestions">提案はありません</string>
+	<string name="suggestions_setting">単語の候補</string>
+	<string name="special_characters">特殊文字</string>
+	<string name="clipboard_history">クリップボード履歴</string>
+	<string name="select_clipboard_item">貼り付けるテキストを選択</string>
 	
 	<!-- Messages -->
 	<string name="success">成功</string>

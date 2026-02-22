@@ -63,6 +63,7 @@
     <Row android:rowEdgeFlags="bottom">
         <Key android:codes="-200" android:keyIcon="@drawable/ic_select" android:keyWidth="15%p" android:keyEdgeFlags="left"/>
         <Key android:codes="-100" android:keyIcon="@drawable/ic_emoji" android:keyWidth="15%p"/>
+        <Key android:codes="-300" android:keyLabel="?123" android:keyWidth="15%p"/>
         <Key android:codes="32" android:keyLabel="SPACE" android:keyWidth="40%p"/>
         <Key android:codes="46" android:keyLabel="." android:keyWidth="10%p"/>
         <Key android:codes="-4" android:keyIcon="@drawable/ic_enter" android:keyWidth="20%p" android:keyEdgeFlags="right"/>

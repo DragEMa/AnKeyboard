@@ -24,6 +24,11 @@ public class LanguageManager {
     private static final String KEY_TRANSLATE_ENABLED = "translate_enabled";
     private static final String KEY_TRANSLATE_LANGUAGE = "translate_language";
     private static final String KEY_THEME = "theme";
+    private static final String KEY_SOUND = "sound_enabled";
+    private static final String KEY_VIBRATION = "vibration_enabled";
+    private static final String KEY_LEARNING = "learning_enabled";
+    private static final String KEY_AUTOCORRECT = "autocorrect_enabled";
+    private static final String KEY_SUGGESTIONS = "suggestions_enabled";
     
     private SharedPreferences prefs;
     
@@ -132,6 +137,57 @@ public class LanguageManager {
                     android.content.res.Configuration.UI_MODE_NIGHT_YES;
         }
         return THEME_DARK.equals(theme);
+    }
+    
+    /* convenience getters/setters for other prefs */
+    public boolean isSoundEnabled() {
+        if (prefs == null) return true;
+        return prefs.getBoolean(KEY_SOUND, true);
+    }
+    
+    public boolean isVibrationEnabled() {
+        if (prefs == null) return true;
+        return prefs.getBoolean(KEY_VIBRATION, true);
+    }
+    
+    public boolean isLearningEnabled() {
+        if (prefs == null) return true;
+        return prefs.getBoolean(KEY_LEARNING, true);
+    }
+    
+    public boolean isAutocorrectEnabled() {
+        if (prefs == null) return true;
+        return prefs.getBoolean(KEY_AUTOCORRECT, true);
+    }
+    
+    public boolean isSuggestionsEnabled() {
+        if (prefs == null) return true;
+        return prefs.getBoolean(KEY_SUGGESTIONS, true);
+    }
+
+    public void setSoundEnabled(boolean enabled) {
+        if (prefs == null) return;
+        prefs.edit().putBoolean(KEY_SOUND, enabled).apply();
+    }
+
+    public void setVibrationEnabled(boolean enabled) {
+        if (prefs == null) return;
+        prefs.edit().putBoolean(KEY_VIBRATION, enabled).apply();
+    }
+
+    public void setLearningEnabled(boolean enabled) {
+        if (prefs == null) return;
+        prefs.edit().putBoolean(KEY_LEARNING, enabled).apply();
+    }
+
+    public void setAutocorrectEnabled(boolean enabled) {
+        if (prefs == null) return;
+        prefs.edit().putBoolean(KEY_AUTOCORRECT, enabled).apply();
+    }
+
+    public void setSuggestionsEnabled(boolean enabled) {
+        if (prefs == null) return;
+        prefs.edit().putBoolean(KEY_SUGGESTIONS, enabled).apply();
     }
     
     /**
