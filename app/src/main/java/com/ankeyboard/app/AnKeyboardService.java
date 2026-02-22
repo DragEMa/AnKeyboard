@@ -204,20 +204,26 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
      */
     private void commitAndLearn(InputConnection ic, String separator) {
         try {
+            if (ic == null) return;
+            if (composing == null) composing = new StringBuilder();
+            if (brain == null) return;
+            if (languageManager == null) return;
+
             if (composing.length() > 0) {
                 String wordTyped = composing.toString();
-                
-                ic.commitText(wordTyped, 1);
-                brain.learnWord(wordTyped);
-                
-                // Translate if enabled
-                if (languageManager.isTranslateEnabled()) {
-                    translateWord(wordTyped, ic);
+                if (wordTyped.length() > 0) {
+                    ic.commitText(wordTyped, 1);
+                    brain.learnWord(wordTyped);
+
+                    // Translate if enabled
+                    if (languageManager.isTranslateEnabled()) {
+                        translateWord(wordTyped, ic);
+                    }
+
+                    composing.setLength(0);
                 }
-                
-                composing.setLength(0);
             }
-            
+
             ic.commitText(separator, 1);
             updateCandidates();
         } catch (Exception e) {
@@ -229,11 +235,13 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
      * Translate word asynchronously
      */
     private void translateWord(String word, InputConnection ic) {
+        if (word == null || ic == null || languageManager == null) return;
         new Thread(() -> {
             try {
                 String targetLang = languageManager.getTranslateLanguage();
+                if (targetLang == null) targetLang = "en";
                 String translated = TranslateManager.translate(word, targetLang);
-                
+
                 if (translated != null && !translated.equals(word)) {
                     // Optionally show translated word in candidates
                 }
@@ -271,12 +279,17 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
     private void updateCandidates() {
         try {
             if (candidateLayout == null) return;
+            if (brain == null) return;
+            if (composing == null) composing = new StringBuilder();
             candidateLayout.removeAllViews();
 
             if (composing.length() > 0) {
                 setCandidatesViewShown(true);
                 
                 List<String> suggestions = brain.getPredictions(composing.toString());
+                if (suggestions == null) {
+                    suggestions = new java.util.ArrayList<>();
+                }
 
                 // First suggestion as autocorrect
                 if (!suggestions.isEmpty()) {
@@ -397,20 +410,19 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
      */
     private void toggleSelectionMode() {
         try {
+            if (keyboardView == null) return;
             isSelectionMode = !isSelectionMode;
             if (isSelectionMode) {
-                if (selectionKeyboard != null && keyboardView != null) {
+                if (selectionKeyboard != null) {
                     keyboardView.setKeyboard(selectionKeyboard);
                 }
                 startSelection();
             } else {
-                if (keyboard != null && keyboardView != null) {
+                if (keyboard != null) {
                     keyboardView.setKeyboard(keyboard);
                 }
             }
-            if (keyboardView != null) {
-                keyboardView.invalidateAllKeys();
-            }
+            keyboardView.invalidateAllKeys();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -495,17 +507,15 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
     private void cutText() {
         try {
             InputConnection ic = getCurrentInputConnection();
-            if (ic != null) {
-                CharSequence selected = ic.getSelectedText(0);
-                if (selected != null && selected.length() > 0) {
-                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                    if (clipboard != null) {
-                        ClipData clip = ClipData.newPlainText("text", selected);
-                        clipboard.setPrimaryClip(clip);
-                        ic.commitText("", 1);
-                    }
-                }
-            }
+            if (ic == null) return;
+            CharSequence selected = ic.getSelectedText(0);
+            if (selected == null || selected.length() == 0) return;
+
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            if (clipboard == null) return;
+            ClipData clip = ClipData.newPlainText("text", selected);
+            clipboard.setPrimaryClip(clip);
+            ic.commitText("", 1);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -517,16 +527,14 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
     private void copyText() {
         try {
             InputConnection ic = getCurrentInputConnection();
-            if (ic != null) {
-                CharSequence selected = ic.getSelectedText(0);
-                if (selected != null && selected.length() > 0) {
-                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                    if (clipboard != null) {
-                        ClipData clip = ClipData.newPlainText("text", selected);
-                        clipboard.setPrimaryClip(clip);
-                    }
-                }
-            }
+            if (ic == null) return;
+            CharSequence selected = ic.getSelectedText(0);
+            if (selected == null || selected.length() == 0) return;
+
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            if (clipboard == null) return;
+            ClipData clip = ClipData.newPlainText("text", selected);
+            clipboard.setPrimaryClip(clip);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -537,14 +545,18 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
      */
     private void pasteText() {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        if (clipboard.hasPrimaryClip()) {
-            ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
-            CharSequence text = item.getText();
-            if (text != null) {
-                InputConnection ic = getCurrentInputConnection();
-                if (ic != null) {
-                    ic.commitText(text, 1);
-                }
+        if (clipboard == null) return;
+        if (!clipboard.hasPrimaryClip()) return;
+        ClipData.PrimaryClipHolder clipHolder = null; // placeholder
+        ClipData clip = clipboard.getPrimaryClip();
+        if (clip == null || clip.getItemCount() == 0) return;
+        ClipData.Item item = clip.getItemAt(0);
+        if (item == null) return;
+        CharSequence text = item.getText();
+        if (text != null) {
+            InputConnection ic = getCurrentInputConnection();
+            if (ic != null) {
+                ic.commitText(text, 1);
             }
         }
     }

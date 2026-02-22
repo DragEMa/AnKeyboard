@@ -260,19 +260,25 @@ public class FileUtil {
     }
 
     public static String convertUriToFilePath(final Context context, final Uri uri) {
-        String path = null;
-        if (DocumentsContract.isDocumentUri(context, uri)) {
-            if (isExternalStorageDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
+        if (context == null || uri == null) {
+            return null;
+        }
+        try {
+            String path = null;
+            if (DocumentsContract.isDocumentUri(context, uri)) {
+                if (isExternalStorageDocument(uri)) {
+                    final String docId = DocumentsContract.getDocumentId(uri);
+                    final String[] split = docId.split(":");
+                    if (split.length < 2) return null;
+                    final String type = split[0];
 
-                if ("primary".equalsIgnoreCase(type)) {
-                    path = Environment.getExternalStorageDirectory() + "/" + split[1];
-                }
-            } else if (isDownloadsDocument(uri)) {
+                    if ("primary".equalsIgnoreCase(type)) {
+                        path = Environment.getExternalStorageDirectory() + "/" + split[1];
+                    }
+                } else if (isDownloadsDocument(uri)) {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
+                if (split.length < 2) return null;
                 final String type = split[0];
 
                 if ("raw".equalsIgnoreCase(type)) {
@@ -316,6 +322,10 @@ public class FileUtil {
             path = getDataColumn(context, uri, null, null);
         } else if (ContentResolver.SCHEME_FILE.equalsIgnoreCase(uri.getScheme())) {
             path = uri.getPath();
+        }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
 
         if (path != null) {
@@ -368,7 +378,9 @@ public class FileUtil {
     }
 
     public static Bitmap getScaledBitmap(String path, int max) {
+        if (path == null) return null;
         Bitmap src = BitmapFactory.decodeFile(path);
+        if (src == null) return null;
 
         int width = src.getWidth();
         int height = src.getHeight();
@@ -418,12 +430,14 @@ public class FileUtil {
     public static void resizeBitmapFileRetainRatio(String fromPath, String destPath, int max) {
         if (!isExistFile(fromPath)) return;
         Bitmap bitmap = getScaledBitmap(fromPath, max);
+        if (bitmap == null) return;
         saveBitmap(bitmap, destPath);
     }
 
     public static void resizeBitmapFileToSquare(String fromPath, String destPath, int max) {
         if (!isExistFile(fromPath)) return;
         Bitmap src = BitmapFactory.decodeFile(fromPath);
+        if (src == null) return;
         Bitmap bitmap = Bitmap.createScaledBitmap(src, max, max, true);
         saveBitmap(bitmap, destPath);
     }
@@ -431,6 +445,7 @@ public class FileUtil {
     public static void resizeBitmapFileToCircle(String fromPath, String destPath) {
         if (!isExistFile(fromPath)) return;
         Bitmap src = BitmapFactory.decodeFile(fromPath);
+        if (src == null) return;
         Bitmap bitmap = Bitmap.createBitmap(src.getWidth(),
                 src.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
@@ -453,6 +468,7 @@ public class FileUtil {
     public static void resizeBitmapFileWithRoundedBorder(String fromPath, String destPath, int pixels) {
         if (!isExistFile(fromPath)) return;
         Bitmap src = BitmapFactory.decodeFile(fromPath);
+        if (src == null) return;
         Bitmap bitmap = Bitmap.createBitmap(src.getWidth(), src
                 .getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
@@ -477,6 +493,7 @@ public class FileUtil {
     public static void cropBitmapFileFromCenter(String fromPath, String destPath, int w, int h) {
         if (!isExistFile(fromPath)) return;
         Bitmap src = BitmapFactory.decodeFile(fromPath);
+        if (src == null) return;
 
         int width = src.getWidth();
         int height = src.getHeight();
@@ -504,6 +521,7 @@ public class FileUtil {
     public static void rotateBitmapFile(String fromPath, String destPath, float angle) {
         if (!isExistFile(fromPath)) return;
         Bitmap src = BitmapFactory.decodeFile(fromPath);
+        if (src == null) return;
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
         Bitmap bitmap = Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true);
@@ -513,6 +531,7 @@ public class FileUtil {
     public static void scaleBitmapFile(String fromPath, String destPath, float x, float y) {
         if (!isExistFile(fromPath)) return;
         Bitmap src = BitmapFactory.decodeFile(fromPath);
+        if (src == null) return;
         Matrix matrix = new Matrix();
         matrix.postScale(x, y);
 
@@ -526,6 +545,7 @@ public class FileUtil {
     public static void skewBitmapFile(String fromPath, String destPath, float x, float y) {
         if (!isExistFile(fromPath)) return;
         Bitmap src = BitmapFactory.decodeFile(fromPath);
+        if (src == null) return;
         Matrix matrix = new Matrix();
         matrix.postSkew(x, y);
 
@@ -539,6 +559,7 @@ public class FileUtil {
     public static void setBitmapFileColorFilter(String fromPath, String destPath, int color) {
         if (!isExistFile(fromPath)) return;
         Bitmap src = BitmapFactory.decodeFile(fromPath);
+        if (src == null) return;
         Bitmap bitmap = Bitmap.createBitmap(src, 0, 0,
                 src.getWidth() - 1, src.getHeight() - 1);
         Paint p = new Paint();
@@ -552,6 +573,7 @@ public class FileUtil {
     public static void setBitmapFileBrightness(String fromPath, String destPath, float brightness) {
         if (!isExistFile(fromPath)) return;
         Bitmap src = BitmapFactory.decodeFile(fromPath);
+        if (src == null) return;
         ColorMatrix cm = new ColorMatrix(new float[]
                 {
                         1, 0, 0, 0, brightness,
@@ -571,6 +593,7 @@ public class FileUtil {
     public static void setBitmapFileContrast(String fromPath, String destPath, float contrast) {
         if (!isExistFile(fromPath)) return;
         Bitmap src = BitmapFactory.decodeFile(fromPath);
+        if (src == null) return;
         ColorMatrix cm = new ColorMatrix(new float[]
                 {
                         contrast, 0, 0, 0, 0,

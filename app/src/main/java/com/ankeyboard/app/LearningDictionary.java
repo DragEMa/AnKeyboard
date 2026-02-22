@@ -35,18 +35,26 @@ public class LearningDictionary {
     }
 
     public void learnWord(String word) {
-        if (word == null || word.trim().length() < 2) return; // Abaikan kata terlalu pendek
-        
-        String key = word.toLowerCase().trim();
-        
+        if (prefs == null || word == null) return;
+        word = word.trim();
+        if (word.length() < 2) return; // ignore very short words
+
+        String key = word.toLowerCase();
+
         int currentFreq = prefs.getInt(key, 0);
-        
         prefs.edit().putInt(key, currentFreq + 1).apply();
     }
 
     public List<String> getPredictions(String composingText) {
+        if (composingText == null) {
+            return new ArrayList<>();
+        }
         String prefix = composingText.toLowerCase();
-        List<Map.Entry<String, ?>> allWords = new ArrayList<>(prefs.getAll().entrySet());
+        Map<String, ?> allMap = prefs.getAll();
+        if (allMap == null) {
+            return new ArrayList<>();
+        }
+        List<Map.Entry<String, ?>> allWords = new ArrayList<>(allMap.entrySet());
         List<Map.Entry<String, ?>> matches = new ArrayList<>();
 
         for (Map.Entry<String, ?> entry : allWords) {

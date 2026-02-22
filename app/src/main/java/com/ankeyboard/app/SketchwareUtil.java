@@ -36,12 +36,20 @@ public class SketchwareUtil {
     public static int BOTTOM = 3;
 
     public static void CustomToast(Context _context, String _message, int _textColor, int _textSize, int _bgColor, int _radius, int _gravity) {
+        if (_context == null) return;
+        if (_message == null) _message = "";
         Toast _toast = Toast.makeText(_context, _message, Toast.LENGTH_SHORT);
         View _view = _toast.getView();
+        if (_view == null) {
+            _toast.show();
+            return;
+        }
         TextView _textView = _view.findViewById(android.R.id.message);
-        _textView.setTextSize(_textSize);
-        _textView.setTextColor(_textColor);
-        _textView.setGravity(Gravity.CENTER);
+        if (_textView != null) {
+            _textView.setTextSize(_textSize);
+            _textView.setTextColor(_textColor);
+            _textView.setGravity(Gravity.CENTER);
+        }
 
         GradientDrawable _gradientDrawable = new GradientDrawable();
         _gradientDrawable.setColor(_bgColor);
@@ -67,14 +75,22 @@ public class SketchwareUtil {
     }
 
     public static void CustomToastWithIcon(Context _context, String _message, int _textColor, int _textSize, int _bgColor, int _radius, int _gravity, int _icon) {
+        if (_context == null) return;
+        if (_message == null) _message = "";
         Toast _toast = Toast.makeText(_context, _message, Toast.LENGTH_SHORT);
         View _view = _toast.getView();
+        if (_view == null) {
+            _toast.show();
+            return;
+        }
         TextView _textView = (TextView) _view.findViewById(android.R.id.message);
-        _textView.setTextSize(_textSize);
-        _textView.setTextColor(_textColor);
-        _textView.setCompoundDrawablesWithIntrinsicBounds(_icon, 0, 0, 0);
-        _textView.setGravity(Gravity.CENTER);
-        _textView.setCompoundDrawablePadding(10);
+        if (_textView != null) {
+            _textView.setTextSize(_textSize);
+            _textView.setTextColor(_textColor);
+            _textView.setCompoundDrawablesWithIntrinsicBounds(_icon, 0, 0, 0);
+            _textView.setGravity(Gravity.CENTER);
+            _textView.setCompoundDrawablePadding(10);
+        }
 
         GradientDrawable _gradientDrawable = new GradientDrawable();
         _gradientDrawable.setColor(_bgColor);
@@ -140,12 +156,15 @@ public class SketchwareUtil {
     }
 
     public static boolean isConnected(Context _context) {
+        if (_context == null) return false;
         ConnectivityManager _connectivityManager = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (_connectivityManager == null) return false;
         NetworkInfo _activeNetworkInfo = _connectivityManager.getActiveNetworkInfo();
         return _activeNetworkInfo != null && _activeNetworkInfo.isConnected();
     }
 
     public static String copyFromInputStream(InputStream _inputStream) {
+        if (_inputStream == null) return "";
         ByteArrayOutputStream _outputStream = new ByteArrayOutputStream();
         byte[] _buf = new byte[1024];
         int _i;
@@ -162,25 +181,33 @@ public class SketchwareUtil {
     }
 
     public static void hideKeyboard(Context _context) {
+        if (_context == null) return;
         InputMethodManager _inputMethodManager = (InputMethodManager) _context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        _inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        if (_inputMethodManager != null) {
+            _inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        }
     }
 
     public static void showKeyboard(Context _context) {
+        if (_context == null) return;
         InputMethodManager _inputMethodManager = (InputMethodManager) _context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        _inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        if (_inputMethodManager != null) {
+            _inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        }
     }
 
     public static void showMessage(Context _context, String _s) {
         Toast.makeText(_context, _s, Toast.LENGTH_SHORT).show();
     }
     public static int getLocationX(View _view) {
+        if (_view == null) return 0;
         int _location[] = new int[2];
         _view.getLocationInWindow(_location);
         return _location[0];
     }
 
     public static int getLocationY(View _view) {
+        if (_view == null) return 0;
         int _location[] = new int[2];
         _view.getLocationInWindow(_location);
         return _location[1];
@@ -193,7 +220,9 @@ public class SketchwareUtil {
 
     public static ArrayList<Double> getCheckedItemPositionsToArray(ListView _list) {
         ArrayList<Double> _result = new ArrayList<Double>();
+        if (_list == null) return _result;
         SparseBooleanArray _arr = _list.getCheckedItemPositions();
+        if (_arr == null) return _result;
         for (int _iIdx = 0; _iIdx < _arr.size(); _iIdx++) {
             if (_arr.valueAt(_iIdx))
                 _result.add((double) _arr.keyAt(_iIdx));
@@ -218,7 +247,9 @@ public class SketchwareUtil {
         _output.clear();
         if (_map == null || _map.size() < 1) return;
         for (Map.Entry<String, Object> _entry : _map.entrySet()) {
-            _output.add(_entry.getKey());
+            if (_entry != null && _entry.getKey() != null) {
+                _output.add(_entry.getKey());
+            }
         }
     }
 }

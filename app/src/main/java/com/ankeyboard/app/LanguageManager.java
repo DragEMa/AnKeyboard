@@ -61,6 +61,7 @@ public class LanguageManager {
      * Set UI language
      */
     public void setUILanguage(String language) {
+        if (prefs == null) return;
         prefs.edit().putString(KEY_UI_LANGUAGE, language).apply();
     }
     
@@ -68,6 +69,7 @@ public class LanguageManager {
      * Get UI language
      */
     public String getUILanguage() {
+        if (prefs == null) return "id";
         return prefs.getString(KEY_UI_LANGUAGE, "id");
     }
     
@@ -75,6 +77,7 @@ public class LanguageManager {
      * Enable/disable translation
      */
     public void setTranslateEnabled(boolean enabled) {
+        if (prefs == null) return;
         prefs.edit().putBoolean(KEY_TRANSLATE_ENABLED, enabled).apply();
     }
     
@@ -82,6 +85,7 @@ public class LanguageManager {
      * Check if translation is enabled
      */
     public boolean isTranslateEnabled() {
+        if (prefs == null) return false;
         return prefs.getBoolean(KEY_TRANSLATE_ENABLED, false);
     }
     
@@ -89,6 +93,7 @@ public class LanguageManager {
      * Set translation target language
      */
     public void setTranslateLanguage(String language) {
+        if (prefs == null) return;
         prefs.edit().putString(KEY_TRANSLATE_LANGUAGE, language).apply();
     }
     
@@ -96,6 +101,7 @@ public class LanguageManager {
      * Get translation target language
      */
     public String getTranslateLanguage() {
+        if (prefs == null) return "en";
         return prefs.getString(KEY_TRANSLATE_LANGUAGE, "en");
     }
     
@@ -103,6 +109,7 @@ public class LanguageManager {
      * Set theme
      */
     public void setTheme(String theme) {
+        if (prefs == null) return;
         prefs.edit().putString(KEY_THEME, theme).apply();
     }
     
@@ -110,6 +117,7 @@ public class LanguageManager {
      * Get theme
      */
     public String getTheme() {
+        if (prefs == null) return THEME_AUTO;
         return prefs.getString(KEY_THEME, THEME_AUTO);
     }
     
@@ -130,6 +138,10 @@ public class LanguageManager {
      * Convert language name to ISO code
      */
     public static String languageNameToCode(String name) {
+        // defensive null check; default to Indonesian
+        if (name == null) {
+            return "id";
+        }
         if (name.contains("Indonesian")) return "id";
         if (name.contains("English")) return "en";
         if (name.contains("Spanish")) return "es";
