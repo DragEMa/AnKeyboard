@@ -24,7 +24,7 @@ jobs:
         yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
     - name: Build APK with Gradle CLI
-      run: gradle assembleDebug --no-daemon
+      run: gradle assembleDebug --no-daemon --warning-mode all
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
