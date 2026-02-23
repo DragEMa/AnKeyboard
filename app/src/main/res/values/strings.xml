@@ -66,4 +66,7 @@
 	<string name="debug_title_hint">Judul</string>
 	<string name="debug_body_hint">Deskripsi (opsional)</string>
 	<string name="debug_send">Kirim ke Repository</string>
+
+	<!-- Keyboard labels -->
+	<string name="label_special_key">?123</string>
 </resources>

@@ -725,7 +725,7 @@ public class AnKeyboardService extends InputMethodService implements KeyboardVie
         showEmojiPicker();
     }
 
-    /**
+    /**m
      * Display dialog with special characters row
      */
     private void showSpecialCharacters() {
