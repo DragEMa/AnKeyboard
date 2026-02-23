@@ -27,6 +27,7 @@ import android.content.ClipData;
 import android.content.SharedPreferences;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 
 import android.inputmethodservice.InputMethodService;
