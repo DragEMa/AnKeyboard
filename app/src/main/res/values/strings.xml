@@ -68,5 +68,5 @@
 	<string name="debug_send">Kirim ke Repository</string>
 
 	<!-- Keyboard labels -->
-	<string name="label_special_key">?123</string>
+	<string name="label_special_key">\u003F123</string>
 </resources>
